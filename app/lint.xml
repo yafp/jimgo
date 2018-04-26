@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="IconLocation">
+        <ignore path="src/main/res/drawable/img_13.jpg" />
+        <ignore path="src/main/res/drawable/img_13.jpg" />
+        <ignore path="src/main/res/drawable/img_13.jpg" />
+        <ignore path="src/main/res/drawable/img_13.jpg" />
+        <ignore path="src/main/res/drawable/img_80.jpg" />
+        <ignore path="src/main/res/drawable/img_92.jpg" />
+    </issue>
+    <issue id="UnusedResources">
+        <ignore path="src/main/res/drawable/img_10.jpg" />
+        <ignore path="src/main/res/drawable/img_7.jpg" />
+    </issue>
+</lint>
