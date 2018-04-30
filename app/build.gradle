@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "de.yafp.jimgo"
-        minSdkVersion 14
+        minSdkVersion 19 // 4.4
         targetSdkVersion 27
         versionCode 2
         versionName "0.10.0"

@@ -32,33 +32,25 @@ public class Jimgo extends AppCompatActivity {
 
         setContentView(R.layout.activity_jimgo);
 
-        // IMMERSIVE mode
-        this.getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        // | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        // IMMERSIVE mode (no lower navigation menu visible)
+        this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         final ImageView img = findViewById(R.id.image);
         img.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                on_next_image();
+                onNextImage();
             }
         });
 
-        // Log Firebase Event
         logFireBaseEvent("jimgo_app_Launch");
 
         // Show logo in actionbar
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.app_icon_actionbar);
 
-        //final View v = this.findViewById(android.R.id.content).getRootView();
-        on_next_image();
+        onNextImage();
     }
 
 
@@ -66,7 +58,7 @@ public class Jimgo extends AppCompatActivity {
     /**
      * write firebase event
      *
-     * @param message
+     * @param message The event text
      */
     private void logFireBaseEvent(String message) {
         Log.d(TAG, "F: logFireBaseEvent");
@@ -80,7 +72,7 @@ public class Jimgo extends AppCompatActivity {
     /**
      * loading next random image
      */
-    private void on_next_image() {
+    private void onNextImage() {
         Log.d(TAG, "F: on_next_image");
 
         // imageview
@@ -98,23 +90,17 @@ public class Jimgo extends AppCompatActivity {
         img.setImageResource(drawableResourceId);
 
         // Fade In
-        //
         AlphaAnimation animation2 = new AlphaAnimation(0.0f, 1.0f);
         animation2.setDuration(1000);
-        //animation1.setStartOffset(5000);
         animation2.setRepeatCount(0);
         animation2.setFillAfter(true);
         img.startAnimation(animation2);
 
-
-
         // -----------------------------------------------------------------------------------------
         // Part 2 - Get animal name of selected image and display it in TextView and actionbar
         // -----------------------------------------------------------------------------------------
-
         // get ressource id of animal string
         int resId = getResources().getIdentifier(random_image_name, "string", getPackageName());
-
         // show animal name in actionbar
         Objects.requireNonNull(getSupportActionBar()).setTitle((Html.fromHtml("<font color=\"#FFFFFF\">&nbsp;" + getResources().getString(resId) + "</font>")));
 
@@ -131,25 +117,13 @@ public class Jimgo extends AppCompatActivity {
         Palette palette = Palette.from(icon).generate();
         int defaultColor = 0x000000;
 
-        // Returns the most vibrant color in the palette as an RGB packed int.
+        // Generate several color int's
         int vibrant = palette.getVibrantColor(defaultColor);
-
-        // Returns a light and vibrant color from the palette as an RGB packed int.
         int vibrantLight = palette.getLightVibrantColor(defaultColor);
-
-        // Returns a dark and vibrant color from the palette as an RGB packed int.
         int vibrantDark = palette.getDarkVibrantColor(defaultColor);
-
-        // Returns a muted color from the palette as an RGB packed int.
         int muted = palette.getMutedColor(defaultColor);
-
-        // Returns a muted and light color from the palette as an RGB packed int.
         int mutedLight = palette.getLightMutedColor(defaultColor);
-
-        // Returns a muted and dark color from the palette as an RGB packed int.
         int mutedDark = palette.getDarkMutedColor(defaultColor);
-
-        // Returns the color of the dominant swatch from the palette, as an RGB packed int.
         int dominant = palette.getDominantColor(defaultColor);
 
         Log.d(TAG, "Vibrant: "+Integer.toString(vibrant));
@@ -160,37 +134,28 @@ public class Jimgo extends AppCompatActivity {
         Log.d(TAG, "MutedDark: "+Integer.toString(mutedDark));
         Log.d(TAG, "Dominant: "+Integer.toString(dominant));
 
-        // Define primary & secondary color
-        //
-        //String primarycolor; // used for status bar & actionbar
+        // Define secondary color
         String secondaryColor; // used as general background color
-
-        // Secondary Color (Background)
-        //
         if(muted != 0) {
-            secondaryColor = create_hex_color(muted);
+            secondaryColor = createHexColor(muted);
         }
         else if(mutedDark != 0) {
-            secondaryColor = create_hex_color(mutedDark);
+            secondaryColor = createHexColor(mutedDark);
         }
         else if(mutedLight != 0) {
-            secondaryColor = create_hex_color(mutedLight);
+            secondaryColor = createHexColor(mutedLight);
         }
         else {
-            secondaryColor = create_hex_color(dominant);
+            secondaryColor = createHexColor(dominant);
         }
 
-        Log.d(TAG, "Secondary Color: "+secondaryColor);
         Log.d(TAG, "colorizing view background with: "+secondaryColor);
 
         // Colorizing view
         View v = this.findViewById(android.R.id.content).getRootView();
         v.setBackgroundColor(Color.parseColor(secondaryColor));
 
-        // Log Firebase Event - image name
         logFireBaseEvent("jimgo_"+random_image_name);
-
-        // Log Firebase Event
         logFireBaseEvent("jimgo_next_image");
     }
 
@@ -198,10 +163,10 @@ public class Jimgo extends AppCompatActivity {
     /**
      * generate hex color from int
      *
-     * @param color
-     * @return
+     * @param color the color as int
+     * @return a color hex
      */
-    private String create_hex_color(int color) {
+    private String createHexColor(int color) {
         Log.d(TAG, "F: create_hex_color");
 
         Log.d(TAG, "Input color int: "+Integer.toString(color));
@@ -216,7 +181,6 @@ public class Jimgo extends AppCompatActivity {
             Log.w(TAG, "Int color was empty. Unable to generate hex color. Using fallback DimGray");
             hex = "#696969"; // set fallback value
 
-            // Log Firebase Event
             logFireBaseEvent("jimgo_empty_int_color");
         }
         return hex;

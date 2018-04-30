@@ -1,5 +1,12 @@
 # Jimgo Changelog
 
+
+## Jimgo 0.11.0 (2018xxyy) (CUR DEV)
+### ```Changed```
+* Requirements: Android 4.4 or higher
+
+
+
 ## Jimgo 0.10.0 (20180426)
 ### ```Added```
 * Enabled Immersive Full-Screen Mode
